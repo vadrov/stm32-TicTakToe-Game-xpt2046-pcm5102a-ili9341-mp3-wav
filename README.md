@@ -8,7 +8,7 @@ Copyright (C) 2022, VadRov, all right reserved.
 С ИИ на основе алгоритма Минимакс (Minimax), cо звуком и эффектами (программные декодеры mp3 и wav), c комментированием кода
 
 Схема подключения дисплея с тачскрином:
-(https://github.com/vadrov/stm32f401ccu6_TicTakToe_touch_audio_display/blob/main/%D0%BF%D0%BE%D0%B4%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20PCM5102A%20%D0%BA%20%D0%9C%D0%9A%20%D0%BF%D0%BE%20I2S.png)
+![https://github.com/vadrov/stm32f401ccu6_TicTakToe_touch_audio_display/blob/main/%D0%BF%D0%BE%D0%B4%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20PCM5102A%20%D0%BA%20%D0%9C%D0%9A%20%D0%BF%D0%BE%20I2S.png]
 Схема подключения аудио ЦАП:
 
 Автор: **VadRov**
