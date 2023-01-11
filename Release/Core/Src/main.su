@@ -1,0 +1,8 @@
+../Core/Src/main.c:185:13:DrawSym.constprop	120	static
+../Core/Src/main.c:185:13:DrawSym.constprop	120	static
+../Core/Src/main.c:97:16:ScanField.constprop	96	static
+../Core/Src/main.c:262:12:GameLogic	184	dynamic
+../Core/Src/main.c:556:6:TicTacToe_DemoGame	640	dynamic,ignoring_inline_asm
+../Core/Src/main.c:984:6:SystemClock_Config	8	static
+../Core/Src/main.c:838:5:main	1992	static,ignoring_inline_asm
+../Core/Src/main.c:1247:6:Error_Handler	0	static,ignoring_inline_asm

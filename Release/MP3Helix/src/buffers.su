@@ -1,0 +1,2 @@
+../MP3Helix/src/buffers.c:156:6:xmp3_FreeBuffers	8	static
+../MP3Helix/src/buffers.c:92:13:xmp3_AllocateBuffers	32	static

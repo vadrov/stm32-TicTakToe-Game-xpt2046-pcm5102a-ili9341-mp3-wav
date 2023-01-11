@@ -1,0 +1,3 @@
+../Music/mp3_callback.c:25:23:mp3_start_play_callback	16	static
+../Music/mp3_callback.c:41:20:mp3_update_play_callback	40	static
+../Music/mp3_callback.c:47:18:mp3_stop_callback	8	static

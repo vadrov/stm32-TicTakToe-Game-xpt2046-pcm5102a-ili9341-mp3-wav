@@ -1,0 +1,8 @@
+../Music/player.c:35:18:PlayerInit	0	static
+../Music/player.c:48:23:PlayerStartPlay	0	static
+../Music/player.c:54:20:PlayerUpdate	0	static
+../Music/player.c:60:18:PlayerStop	0	static
+../Music/player.c:72:5:PlayerAdd	24	static
+../Music/player.c:111:6:PlayerDel	16	static
+../Music/player.c:143:6:PlayerDelAll	24	static,ignoring_inline_asm
+../Music/player.c:161:5:PlayersUpdate	48	static
