@@ -1,5 +1,7 @@
 /* USER CODE BEGIN Header */
 /*
+ * Copyright (C) 2022, VadRov, all right reserved.
+ *
  * Демонстрация работы с сенсорным экраном (тачскрином) на контроллере XPT2046 (HR2046 и т.п.),
  * дисплеем на базе контроллера ILI9341 (spi) 320х240, аудио ЦАПом PCM5102
  *
@@ -13,10 +15,8 @@
  *
  * Использованы фрагменты музыкальных произведений (на основе лицензии CC BY 3.0)
  * композитора Кевина Маклауда:
- * Constance,  (с)2011 Kevin MacLeod
- * Delay Rock, (с)2005 Kevin MacLeod
- *
- * Copyright (C) 2022, VadRov, all right reserved.
+ * 					Constance,  (с)2011 Kevin MacLeod
+ * 					Delay Rock, (с)2005 Kevin MacLeod
  *
  * https://www.youtube.com/@VadRov
  * https://dzen.ru/vadrov
