@@ -11,11 +11,12 @@
  *
  * Со звуком и эффектами (программные декодеры mp3 и wav)
  *
- * С полным комментированием кода
+ * Использованы фрагменты музыкальных произведений (на основе лицензии CC BY 3.0)
+ * композитора Кевина Маклауда:
+ * Constance,  (с)2011 Kevin MacLeod
+ * Delay Rock, (с)2005 Kevin MacLeod
  *
  * Copyright (C) 2022, VadRov, all right reserved.
- *
- * Автор: VadRov
  *
  * https://www.youtube.com/@VadRov
  * https://dzen.ru/vadrov
