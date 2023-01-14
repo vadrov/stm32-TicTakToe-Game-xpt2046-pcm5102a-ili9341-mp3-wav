@@ -10,8 +10,15 @@ Copyright (C) 2022, VadRov, all right reserved.
 ![stm32 + ili9341+xpt2046 схема подключения](https://user-images.githubusercontent.com/111627147/211880060-12eb392f-d982-4026-aa97-a971dd6c6dfe.jpg)
 Схема подключения аудио ЦАП:
 ![подключение PCM5102A к МК по I2S](https://user-images.githubusercontent.com/111627147/211880482-a84e0d50-aec9-43e3-8459-ae85eaa4b9b2.jpg)
+
+Использованы фрагменты музыкальных произведений (на основе лицензии CC BY 3.0) композитора Кевина Маклауда:
+
+Constance,  (с)2011 Kevin MacLeod
+
+Delay Rock, (с)2005 Kevin MacLeod
+
 Автор: **VadRov**
 
-Контакты: [Youtube](https://www.youtube.com/c/VadRov) [Дзен](https://zen.yandex.ru/vadrov) [VK](https://vk.com/vadrov) [Telegram](https://t.me/vadrov_channel)
+Контакты: [Youtube](https://www.youtube.com/@VadRov) [Дзен](https://dzen.ru/vadrov) [VK](https://vk.com/vadrov) [Telegram](https://t.me/vadrov_channel)
 
 Донат: [Поддержать автора](https://yoomoney.ru/to/4100117522443917)
