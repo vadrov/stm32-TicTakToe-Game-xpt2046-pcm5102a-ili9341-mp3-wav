@@ -640,11 +640,13 @@ void LCD_FillWindow(LCD_Handler* lcd, uint16_t x1, uint16_t y1, uint16_t x2, uin
 	spi->CR1 &= ~SPI_CR1_SPE;
 }
 
+/* Закрашивает весь дисплей заданным цветом */
 void LCD_Fill(LCD_Handler* lcd, uint32_t color)
 {
 	LCD_FillWindow(lcd, 0, 0, lcd->Width - 1, lcd->Height - 1, color);
 }
 
+/* Рисует точку в заданных координатах */
 void LCD_DrawPixel(LCD_Handler* lcd, int16_t x, int16_t y, uint32_t color)
 {
 	if (x > lcd->Width - 1 || y > lcd->Height - 1 || x < 0 || y < 0)	return;
@@ -653,6 +655,10 @@ void LCD_DrawPixel(LCD_Handler* lcd, int16_t x, int16_t y, uint32_t color)
 	LCD_WriteData(lcd, &color1, 1);
 }
 
+/*
+ * Рисует линию по координатам двух точек
+ * Горизонтальные и вертикальные линии рисуются очень быстро
+ */
 void LCD_DrawLine(LCD_Handler* lcd, int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t color)
 {
 	if(x0 == x1 || y0 == y1) {
@@ -715,6 +721,7 @@ void LCD_DrawLine(LCD_Handler* lcd, int16_t x0, int16_t y0, int16_t x1, int16_t 
     }
 }
 
+/* Рисует прямоугольник по координатам левого верхнего и правого нижнего углов */
 void LCD_DrawRectangle(LCD_Handler* lcd, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint32_t color)
 {
 	LCD_DrawLine(lcd, x1, y1, x2, y1, color);
@@ -723,6 +730,7 @@ void LCD_DrawRectangle(LCD_Handler* lcd, int16_t x1, int16_t y1, int16_t x2, int
 	LCD_DrawLine(lcd, x2, y1, x2, y2, color);
 }
 
+/* Рисует закрашенный прямоугольник по координатам левого верхнего и правого нижнего углов */
 void LCD_DrawFilledRectangle(LCD_Handler* lcd, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint32_t color)
 {
 	int16_t tmp;
@@ -735,6 +743,7 @@ void LCD_DrawFilledRectangle(LCD_Handler* lcd, int16_t x1, int16_t y1, int16_t x
 	LCD_FillWindow(lcd, x1, y1, x2, y2, color);
 }
 
+/* Рисует треугольник по координатам трех точек */
 void LCD_DrawTriangle(LCD_Handler* lcd, int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, uint32_t color)
 {
 	LCD_DrawLine(lcd, x1, y1, x2, y2, color);
@@ -742,23 +751,24 @@ void LCD_DrawTriangle(LCD_Handler* lcd, int16_t x1, int16_t y1, int16_t x2, int1
 	LCD_DrawLine(lcd, x3, y3, x1, y1, color);
 }
 
-//виды пересечений
+/* Виды пересечений отрезков */
 typedef enum {
 	LINES_NO_INTERSECT = 0, //не пересекаются
 	LINES_INTERSECT,		//пересекаются
 	LINES_MATCH				//совпадают (накладываются)
 } INTERSECTION_TYPES;
 
-//определение вида пересечения и координат (по оси х) пересечения отрезка с координатами (x1,y1)-(x2,y2)
-//с горизонтальной прямой y = y0
-//возвращает вид пересечения, а в переменных x_min, x_max - координату либо диапазон пересечения (если накладываются) по оси x,
-//в match инкрементирует количество накладываний (считаем результаты со всех нужных вызовов)
+/*
+ * Определение вида пересечения и координат (по оси х) пересечения отрезка с координатами (x1,y1)-(x2,y2)
+ * с горизонтальной прямой y = y0
+ * Возвращает один из видов пересечения типа INTERSECTION_TYPES, а в переменных x_min, x_max - координату
+ * либо диапазон пересечения (если накладываются).
+ * В match инкрементирует количество накладываний (считаем результаты со всех нужных вызовов)
+ */
 static INTERSECTION_TYPES LinesIntersection(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t y0, int16_t *x_min, int16_t *x_max, uint8_t *match)
 {
-	if (y1 == y2) //частный случай - отрезок параллелен оси х
-	{
-		if (y0 == y1) //проверка на совпадение
-		{
+	if (y1 == y2) { //Частный случай - отрезок параллелен оси х
+		if (y0 == y1) { //Проверка на совпадение
 			*x_min = min(x1, x2);
 			*x_max = max(x1, x2);
 			(*match)++;
@@ -766,20 +776,22 @@ static INTERSECTION_TYPES LinesIntersection(int16_t x1, int16_t y1, int16_t x2, 
 		}
 		return LINES_NO_INTERSECT;
 	}
-	if (x1 == x2) //частный случай - отрезок параллелен оси y
-	{
-		if (min(y1, y2) <= y0 && y0 <= max(y1, y2))
-		{
+	if (x1 == x2) { //Частный случай - отрезок параллелен оси y
+		if (min(y1, y2) <= y0 && y0 <= max(y1, y2)) {
 			*x_min = *x_max = x1;
 			return LINES_INTERSECT;
 		}
 		return LINES_NO_INTERSECT;
 	}
+	//Определяем точку пересечения прямых (уравнение прямой получаем из координат точек, задающих отрезок)
 	*x_min = *x_max = (x2 - x1) * (y0 - y1) / (y2 - y1) + x1;
-	if (min(x1, x2) <= *x_min && *x_min <= max(x1, x2)) return LINES_INTERSECT;
+	if (min(x1, x2) <= *x_min && *x_min <= max(x1, x2)) { //Если координата x точки пересечения принадлежит отрезку
+		return LINES_INTERSECT;							  //то есть пересечение
+	}
 	return LINES_NO_INTERSECT;
 }
 
+/* Рисует закрашенный треугольник по координатам трех точек */
 void LCD_DrawFilledTriangle(LCD_Handler* lcd, int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, uint32_t color)
 {
 	//Сортируем координаты в порядке возрастания y
@@ -803,9 +815,12 @@ void LCD_DrawFilledTriangle(LCD_Handler* lcd, int16_t x1, int16_t y1, int16_t x2
 	if (xmax < 0 || xmin > lcd->Width - 1) return;
 	uint8_t c_mas, match;
 	int16_t x_mas[8], x_min, x_max;
+	//"Обрезаем" координаты, выходящие за рабочую область дисплея
+	int16_t y_start = y1 < 0 ? 0: y1;
+	int16_t y_end = y3 > lcd->Height - 1 ? lcd->Height - 1: y3;
 	//Проходим в цикле по точкам диапазона координаты y и ищем пересечение отрезка y = y[i] (где y[i]=y1...y3, 1)
 	//со сторонами треугольника
-	for (int16_t y = y1; y < y3; y++) {
+	for (int16_t y = y_start; y < y_end; y++) {
 		c_mas = match = 0;
 		if (LinesIntersection(x1, y1, x2, y2, y, &x_mas[c_mas], &x_mas[c_mas + 1], &match)) {
 			c_mas += 2;
@@ -827,6 +842,7 @@ void LCD_DrawFilledTriangle(LCD_Handler* lcd, int16_t x1, int16_t y1, int16_t x2
 	}
 }
 
+/* Рисует окружность с заданным центром и радиусом */
 void LCD_DrawCircle(LCD_Handler* lcd, int16_t x0, int16_t y0, int16_t r, uint32_t color)
 {
 	int16_t f = 1 - r;
@@ -862,6 +878,7 @@ void LCD_DrawCircle(LCD_Handler* lcd, int16_t x0, int16_t y0, int16_t r, uint32_
 	}
 }
 
+/* Рисует закрашенную окружность с заданным центром и радиусом */
 void LCD_DrawFilledCircle(LCD_Handler* lcd, int16_t x0, int16_t y0, int16_t r, uint32_t color)
 {
 	int16_t f = 1 - r;
@@ -890,8 +907,13 @@ void LCD_DrawFilledCircle(LCD_Handler* lcd, int16_t x0, int16_t y0, int16_t r, u
 	}
 }
 
-//выводит на экран область памяти (изображение) по адресу в data
-//x, y - координата верхнего левого края
+/*
+ * Выводит в заданную область дисплея блок памяти (изображение) по адресу в data:
+ * x, y - координата левого верхнего угла области дисплея;
+ * w, h - ширина и высота области дисплея;
+ * data - указатель на блок памяти (изображение) для вывода на дисплей;
+ * dma_use_flag - флаг, определяющий задействование DMA (0 - без DMA, !=0 - с DMA)
+ */
 void LCD_DrawImage(LCD_Handler* lcd, uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data, uint8_t dma_use_flag)
 {
 	if ((x >= lcd->Width) || (y >= lcd->Height) || (x + w - 1) >= lcd->Width || (y + h - 1) >= lcd->Height) return;
@@ -904,11 +926,14 @@ void LCD_DrawImage(LCD_Handler* lcd, uint16_t x, uint16_t y, uint16_t w, uint16_
 	}
 }
 
-//вывод символа ch текста с позиции x, y, шрифтом font, цветом букв color, цветом окружения bgcolor
-//modesym - определяет, как выводить символ:
-//LCD_SYMBOL_PRINT_FAST - быстрый вывод с полным затиранием знакоместа
-//LCD_SYMBOL_PRINT_PSETBYPSET - вывод символа по точкам, при этом цвет окружения bgcolor игнорируется (режим наложения)
-//ширина символа до 32 пикселей (4 байта на строку)
+/*
+ * Вывод на дисплей символа с кодом в ch, с начальными координатами координатам (x, y), шрифтом font, цветом color,
+ * цветом окружения bgcolor.
+ * modesym - определяет, как выводить символ:
+ *    LCD_SYMBOL_PRINT_FAST - быстрый вывод с полным затиранием знакоместа;
+ *    LCD_SYMBOL_PRINT_PSETBYPSET - вывод символа по точкам, при этом цвет окружения bgcolor игнорируется (режим наложения).
+ * Ширина символа до 32 пикселей (4 байта на строку). Высота символа библиотекой не ограничивается.
+ */
 void LCD_WriteChar(LCD_Handler* lcd, uint16_t x, uint16_t y, char ch, FontDef *font, uint32_t txcolor, uint32_t bgcolor, LCD_PrintSymbolMode modesym)
 {
 	int i, j, k;
@@ -918,9 +943,12 @@ void LCD_WriteChar(LCD_Handler* lcd, uint16_t x, uint16_t y, char ch, FontDef *f
 	uint16_t txcolor16 = LCD_Color_24b_to_16b(lcd, txcolor);
 	uint16_t bgcolor16 = LCD_Color_24b_to_16b(lcd, bgcolor);
 	ch = ch < font->firstcode || ch > font->lastcode ? 0: ch - font->firstcode;
-	int bytes_per_line = ((font->width-1)>>3) + 1;
-	k = 1<<((bytes_per_line<<3) - 1);
-	b +=  ch * bytes_per_line * font->height;
+	int bytes_per_line = ((font->width - 1) >> 3) + 1;
+	if (bytes_per_line > 4) { //Поддержка ширины символов до 32 пикселей (4 байта на строку)
+		return;
+	}
+	k = 1 << ((bytes_per_line << 3) - 1);
+	b += ch * bytes_per_line * font->height;
 	SPI_TypeDef *spi = lcd->spi_data.spi;
 	if (modesym == LCD_SYMBOL_PRINT_FAST) {
 		LCD_SetActiveWindow(lcd, x, y, x + font->width - 1, y + font->height - 1);
@@ -936,10 +964,10 @@ void LCD_WriteChar(LCD_Handler* lcd, uint16_t x, uint16_t y, char ch, FontDef *f
 		}
 		spi->CR1 |= SPI_CR1_SPE; // SPI включаем
 		for (i = 0; i < font->height; i++) {
-			if (bytes_per_line == 1) { tmp = *((uint8_t*)b); }
+			if (bytes_per_line == 1)      { tmp = *((uint8_t*)b);  }
 			else if (bytes_per_line == 2) { tmp = *((uint16_t*)b); }
-			else if (bytes_per_line == 3) { tmp = *((uint8_t*)b); tmp += (*((uint16_t*)(b+1)))>>8; }
-			else if (bytes_per_line == 4) { tmp = *((uint32_t*)b); }
+			else if (bytes_per_line == 3) { tmp = (*((uint8_t*)b)) | ((*((uint8_t*)(b + 1))) << 8) |  ((*((uint8_t*)(b + 2))) << 16); }
+			else { tmp = *((uint32_t*)b); }
 			b += bytes_per_line;
 			for (j = 0; j < font->width; j++)
 			{
@@ -966,8 +994,8 @@ void LCD_WriteChar(LCD_Handler* lcd, uint16_t x, uint16_t y, char ch, FontDef *f
 		for (i = 0; i < font->height; i++) {
 			if (bytes_per_line == 1) { tmp = *((uint8_t*)b); }
 			else if (bytes_per_line == 2) { tmp = *((uint16_t*)b); }
-			else if (bytes_per_line == 3) { tmp = *((uint8_t*)b); tmp += (*((uint16_t*)(b+1)))>>8; }
-			else if (bytes_per_line == 4) { tmp = *((uint32_t*)b); }
+			else if (bytes_per_line == 3) { tmp = (*((uint8_t*)b)) | ((*((uint8_t*)(b + 1))) << 8) |  ((*((uint8_t*)(b + 2))) << 16); }
+			else { tmp = *((uint32_t*)b); }
 			b += bytes_per_line;
 			for (j = 0; j < font->width; j++) {
 				if ((tmp << j) & k) {

@@ -193,6 +193,9 @@ static void DrawSym(LCD_Handler *lcd, char sym, uint16_t x, uint16_t y, uint32_t
 	const uint8_t *b = font->data;
 	int i, j, k, f_h = font->height;
 	int bytes_per_line = ((font->width-1) >> 3) + 1; //Количество байт данных, приходящихся на горизонтальную линию шрифта
+	if (bytes_per_line > 4) { //Поддержка ширины символов до 32 пикселей (4 байта на строку)
+		return;
+	}
 	k = 1 << ((bytes_per_line << 3) - 1); //Битовая маска для побитного сканирования горизонтальной линии шрифта
 	k <<= (font->height - font->width) / 2; //Выравниваем битовую маску с учетом разницы высоты и ширины шрифта, приводя символ к "квадратному"
 	if (!sym) sym = ' ';	//Если ID равен 0, то символ = пробелу (код 32)
@@ -203,8 +206,8 @@ static void DrawSym(LCD_Handler *lcd, char sym, uint16_t x, uint16_t y, uint32_t
 	for (i = 0; i < f_h; i++) {	//Цикл по высоте шрифта
 		if (bytes_per_line == 1) { tmp = *((uint8_t*)b); }     //Считываем данные строки шрифта
 		else if (bytes_per_line == 2) { tmp = *((uint16_t*)b); }
-		else if (bytes_per_line == 3) { tmp = *((uint8_t*)b); tmp += (*((uint16_t*)(b+1))) >> 8; }
-		else if (bytes_per_line == 4) { tmp = *((uint32_t*)b); }
+		else if (bytes_per_line == 3) { tmp = (*((uint8_t*)b)) | ((*((uint8_t*)(b + 1))) << 8) |  ((*((uint8_t*)(b + 2))) << 16); }
+		else { tmp = *((uint32_t*)b); }
 		b += bytes_per_line; //Раccчитываем адрес следующей строки символа
 		for (j = 0; j < f_h; j++) { //Цикл по ширине символа (символ "квадратный", т.к. уравниваем его высоту и ширину)
 			if (!j || j == (f_h - 1) || !i || i == (f_h - 1)) { //Рамку вокруг символа рисуем для 1 и последней
