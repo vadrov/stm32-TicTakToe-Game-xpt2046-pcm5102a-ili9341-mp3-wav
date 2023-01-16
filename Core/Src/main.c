@@ -267,7 +267,7 @@ static void ShowGameField(LCD_Handler *lcd, uint8_t *field, uint8_t field_size)
  */
 static int GameLogic(uint8_t *field, uint8_t field_size, uint8_t gamer, uint8_t maxmin, uint8_t *row, uint8_t *col, uint8_t depth)
 {
-	typedef struct { //Объявляем структуру, описывающую ход
+	typedef struct { 			//Объявляем структуру, описывающую ход
 		uint8_t i, j;			//Позиция шага на игровом поле
 		int score;				//Очки шага (результативность хода)
 		uint8_t sub_score;		//Дополнительные очки шага (учитываются в случае равенства очков за основные шаги)
@@ -284,23 +284,19 @@ static int GameLogic(uint8_t *field, uint8_t field_size, uint8_t gamer, uint8_t 
 		return 0;
 	}
 	GAME_STEP logic_mas[max_step]; //Массив игровых ходов для текущего игрового поля
-	uint8_t field_copy[field_size * field_size]; //Массив для копии игрового поля
 	//Для каждой свободной клетки игрового поля создадим игровую ситуацию GAME_STEP, которая будет содержать
-	//копию текущего игрового поля, но с ходом игрока gamer в эту свободную клетку, индексы этой клетки на поле (параметры хода),
-	//основные и дополнительные очки за ход (результативность хода). Считать игровые ситуации будем в переменной k
+	//параметры хода (индексы клетки) игрока gamer, основные и дополнительные очки за ход (результативность хода).
+	//Считать игровые ситуации будем в переменной k
 	for (i = 0, k = 0; i < field_size; i++)	{ //цикл по количеству строк в игровом поле
 		for (j = 0; j < field_size; j++) {	  //Цикл по количеству столбцов в игровом поле
 			if (!field[i * field_size + j]) { //Если клетка в позиции [i, j] игрового поля свободна:
-				for (m = 0; m < field_size * field_size; m++) { //Делаем копию текущего игрового поля
-					field_copy[m] = field[m];					//для k-той игровой ситуации
-				}
-				field_copy[i * field_size + j] = gamer;	//В копию поля для k-той игровой ситуации
-				logic_mas[k].i = i;						//делаем ход (записываем переменную gamer) игроком gamer
-				logic_mas[k].j = j;						//и запоминаем номера строки и столбца хода.
+				field[i * field_size + j] = gamer;		//делаем ход (записываем переменную gamer) в клетку
+				logic_mas[k].i = i;						//и запоминаем номера строки
+				logic_mas[k].j = j;						//и столбца хода
 				logic_mas[k].score = logic_mas[k].sub_score = 0; //Инициализируем очки хода
 				row1 = col1 = 0;
 				//Сканируем игровое поле k-той игровой ситуации, оценивая результативность предполагаемого хода
-				f = ScanField(field_copy, field_size, gamer, &row1, &col1, &logic_mas[k].sub_score);
+				f = ScanField(field, field_size, gamer, &row1, &col1, &logic_mas[k].sub_score);
 				if (f) {			//Шаг привел к победе или ничьей?
 					if (f == 1) {   //Победа
 						logic_mas[k].score = (maxmin == MAXIMIZE) ? 1 : -1; //очки за победу
@@ -314,8 +310,9 @@ static int GameLogic(uint8_t *field, uint8_t field_size, uint8_t gamer, uint8_t 
 					   //Проанализируем все возможные ответные ходы противника на наш ход, но критерий алгоритма Минимакс
 					   //изменяем на противоположный, а саму функцию вызываем для противника gamer. В качестве поля для анализа
 					   //передаем копию поля с предполагаемым шагом игрока gamer
-					logic_mas[k].score = GameLogic(field_copy, field_size, (gamer == HUMAN)? COMPUTER: HUMAN, (maxmin == MAXIMIZE)? MINIMIZE : MAXIMIZE, row, col, depth - 1);
+					logic_mas[k].score = GameLogic(field, field_size, (gamer == HUMAN)? COMPUTER: HUMAN, (maxmin == MAXIMIZE)? MINIMIZE : MAXIMIZE, row, col, depth - 1);
 				}
+				field[i * field_size + j] = 0; //Восстанавливаем игровое поле в состояние "до хода"
 				k++; //Увеличиваем счетчик шагов
 			}
 		}
@@ -968,7 +965,7 @@ int main(void)
   /*------------------------------------------------------------------------------------------------------*/
 
   //Демо игра "Крестики-нолики"
- TicTacToe_DemoGame(lcd, &touch1);
+  TicTacToe_DemoGame(lcd, &touch1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -1134,7 +1131,7 @@ static void MX_TIM3_Init(void)
   /* USER CODE END TIM3_Init 1 */
   TIM_InitStruct.Prescaler = 999;
   TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
-  TIM_InitStruct.Autoreload = 139;
+  TIM_InitStruct.Autoreload = 209;
   TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
   LL_TIM_Init(TIM3, &TIM_InitStruct);
   LL_TIM_DisableARRPreload(TIM3);
@@ -1204,7 +1201,7 @@ static void MX_GPIO_Init(void)
   LL_GPIO_SetOutputPin(T_CS_GPIO_Port, T_CS_Pin);
 
   /**/
-  GPIO_InitStruct.Pin = LCD_DC_Pin|LCD_RESET_Pin|LCD_CS_Pin;
+  GPIO_InitStruct.Pin = LCD_DC_Pin|LCD_RESET_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
@@ -1212,11 +1209,19 @@ static void MX_GPIO_Init(void)
   LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /**/
+  GPIO_InitStruct.Pin = LCD_CS_Pin;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+  LL_GPIO_Init(LCD_CS_GPIO_Port, &GPIO_InitStruct);
+
+  /**/
   GPIO_InitStruct.Pin = T_CS_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
   LL_GPIO_Init(T_CS_GPIO_Port, &GPIO_InitStruct);
 
   /**/
