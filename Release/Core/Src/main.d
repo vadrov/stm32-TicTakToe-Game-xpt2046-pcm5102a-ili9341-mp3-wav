@@ -19,13 +19,15 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h \
  C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/XPT2046/xpt2046.h \
- C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/display.h \
- C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/fonts.h \
  C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/ili9341.h \
  C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/PCM5102/pcm5102.h \
+ C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/display.h \
+ C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/fonts.h \
  C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Music/player.h \
  C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Music/mus_data.h \
- C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Music/mus_data.h
+ C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Music/mus_data.h \
+ C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/XPT2046/calibrate_touch.h \
+ C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/XPT2046/xpt2046.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:
@@ -47,10 +49,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h:
 C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/XPT2046/xpt2046.h:
-C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/display.h:
-C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/fonts.h:
 C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/ili9341.h:
 C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/PCM5102/pcm5102.h:
+C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/display.h:
+C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/fonts.h:
 C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Music/player.h:
 C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Music/mus_data.h:
 C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Music/mus_data.h:
+C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/XPT2046/calibrate_touch.h:
+C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/XPT2046/xpt2046.h:

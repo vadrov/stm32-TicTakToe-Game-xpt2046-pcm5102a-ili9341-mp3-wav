@@ -20,7 +20,6 @@
 #define INC_XPT2046_H_
 
 #include "main.h"
-#include "display.h"
 
 /* команды контроллера XPT2046
  * BIT7(MSB)  BIT6 BIT5  BIT4  BIT3    BIT2    BIT1  BIT0(LSB)
@@ -34,8 +33,8 @@
  */
 //Команды контроллера для 16-битного spi
 #define XPT2046_NOP 	0x0000
-#define XPT2046_Y 		0x0090
-#define XPT2046_X 		0x00D0
+#define XPT2046_X 		0x0090 //00000000 10010000 - измерение напряжения на сенсоре для координаты X
+#define XPT2046_Y 		0x00D0 //00000000 11010000 - измерение напряжения на сенсоре для координаты Y
 
 //данные подключения тачскрина
 typedef struct {
@@ -91,8 +90,6 @@ void XPT2046_TIMCallback(XPT2046_Handler *t);
 void XPT2046_InitTouch(XPT2046_Handler *t, uint32_t timer_update_period, XPT2046_ConnectionData *cnt_data);
 //опрос тачскрина
 uint8_t XPT2046_GetTouch(XPT2046_Handler *t);
-//калибровка тачскрина по 5 точкам
-uint8_t XPT2046_CalibrateTouch(XPT2046_Handler *t, LCD_Handler *lcd);
 //преобразование координат тачскрина в дисплейные координаты
 void XPT2046_ConvertPoint(tPoint *p_display, tPoint *p_touch, tCoef *coef);
 

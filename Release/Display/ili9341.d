@@ -1,4 +1,5 @@
-Display/ili9341.o: ../Display/ili9341.c ../Core/Inc/main.h \
+Display/ili9341.o: ../Display/ili9341.c ../Display/../Display/ili9341.h \
+ ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h \
@@ -18,7 +19,8 @@ Display/ili9341.o: ../Display/ili9341.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_spi.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h \
- ../Display/ili9341.h ../Display/display.h ../Display/fonts.h
+ ../Display/../Display/display.h ../Display/../Display/fonts.h
+../Display/../Display/ili9341.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:
@@ -39,6 +41,5 @@ Display/ili9341.o: ../Display/ili9341.c ../Core/Inc/main.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_spi.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h:
-../Display/ili9341.h:
-../Display/display.h:
-../Display/fonts.h:
+../Display/../Display/display.h:
+../Display/../Display/fonts.h:

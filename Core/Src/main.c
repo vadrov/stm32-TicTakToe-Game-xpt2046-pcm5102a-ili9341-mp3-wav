@@ -37,6 +37,8 @@
 #include "display.h"  //Библиотека управления дисплеями по spi
 #include "player.h"   //Библиотека для воспроизведения wav и mp3 файлов, хранящихся во флеш памяти микроконтроллера
 #include "mus_data.h" //Музыкальные данные игры (музыка и эффекты)
+#include "calibrate_touch.h" //Модуль калибровки тачскрина
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -702,7 +704,6 @@ Game_option:
 								size,
 								field_size);
 					}
-					ShowGameField(lcd, field, field_size);
 				}
 			}
 			else { //Если же все клетки заняты, т.е. возможности хода нет:
@@ -774,7 +775,7 @@ Game_option:
 				}
 			}
 			if (!fl_new_game) { //При сброшенном флаге "новая игра"
-				ShowGameField(lcd, field, field_size); //Перересовываем игровое поле и проверяем, есть ли победа человека после хода.
+				//Проверяем, есть ли победа человека после хода.
 				if (ScanField(field, field_size, HUMAN, &row1, &col1, &sub_score) == 1) { //Если есть:
 					str_winner = (char*)str_humanwin; //Присваиваем "информационному указателю" адрес строки с именем победителя
 					fl_new_game = 1; //Устанавливаем флаг "новая игра"
@@ -900,7 +901,7 @@ int main(void)
     		  	  	  	  	  	  .channel_htim_bk = LL_TIM_CHANNEL_CH1, //Канал таймера - для подсветки с PWM (изменение яркости подсветки)
 								  .blk_port 	   = 0,					 //Порт gpio - подсветка по типу вкл./выкл.
 								  .blk_pin 		   = 0,					 //Вывод порта - подсветка по типу вкл./выкл.
-								  .bk_percent	   = 80  };				 //Яркость подсветки в %
+								  .bk_percent	   = 60  };				 //Яркость подсветки в %
 
   //Данные подключения
   LCD_SPI_Connected_data spi_con = { .spi 		 = SPI1,				//Используемый spi

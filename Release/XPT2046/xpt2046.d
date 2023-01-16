@@ -18,9 +18,7 @@ XPT2046/xpt2046.o: ../XPT2046/xpt2046.c ../XPT2046/xpt2046.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_spi.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h \
- C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/display.h \
- C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/fonts.h
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h
 ../XPT2046/xpt2046.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h:
@@ -42,5 +40,3 @@ XPT2046/xpt2046.o: ../XPT2046/xpt2046.c ../XPT2046/xpt2046.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_spi.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h:
-C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/display.h:
-C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/fonts.h:

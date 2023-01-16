@@ -1,5 +1,5 @@
-Display/fonts.o: ../Display/fonts.c ../Display/../Display/fonts.h \
- ../Core/Inc/main.h \
+XPT2046/calibrate_touch.o: ../XPT2046/calibrate_touch.c \
+ ../XPT2046/calibrate_touch.h ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h \
@@ -18,8 +18,11 @@ Display/fonts.o: ../Display/fonts.c ../Display/../Display/fonts.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_spi.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h
-../Display/../Display/fonts.h:
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h \
+ C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/display.h \
+ C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/fonts.h \
+ ../XPT2046/xpt2046.h
+../XPT2046/calibrate_touch.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h:
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h:
@@ -40,3 +43,6 @@ Display/fonts.o: ../Display/fonts.c ../Display/../Display/fonts.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_spi.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h:
+C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/display.h:
+C:/Users/SamaraPRO/STM32Cube/Repository/stm32f401ccu6_TicTakToe_touch_audio_display/Display/fonts.h:
+../XPT2046/xpt2046.h:
