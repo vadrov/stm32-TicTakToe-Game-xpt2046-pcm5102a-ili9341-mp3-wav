@@ -5369,90 +5369,89 @@ Disassembly of section .text:
  8003d92:	e9cd 2336 	strd	r2, r3, [sp, #216]	; 0xd8
  8003d96:	ed8d 8b34 	vstr	d8, [sp, #208]	; 0xd0
  8003d9a:	f001 fa17 	bl	80051cc <LL_GPIO_Init>
- 8003d9e:	f008 fc5f 	bl	800c660 <I2S3_Init>
- 8003da2:	a148      	add	r1, pc, #288	; (adr r1, 8003ec4 <main+0x5a4>)
- 8003da4:	e9d1 0100 	ldrd	r0, r1, [r1]
- 8003da8:	2208      	movs	r2, #8
- 8003daa:	822a      	strh	r2, [r5, #16]
- 8003dac:	4b3e      	ldr	r3, [pc, #248]	; (8003ea8 <main+0x588>)
- 8003dae:	f8c5 8014 	str.w	r8, [r5, #20]
- 8003db2:	2204      	movs	r2, #4
- 8003db4:	832a      	strh	r2, [r5, #24]
- 8003db6:	2210      	movs	r2, #16
- 8003db8:	e9c5 0100 	strd	r0, r1, [r5]
- 8003dbc:	842a      	strh	r2, [r5, #32]
- 8003dbe:	cb0f      	ldmia	r3, {r0, r1, r2, r3}
- 8003dc0:	f10d 0c78 	add.w	ip, sp, #120	; 0x78
- 8003dc4:	f10d 0e2c 	add.w	lr, sp, #44	; 0x2c
- 8003dc8:	e88c 000f 	stmia.w	ip, {r0, r1, r2, r3}
- 8003dcc:	e9c5 a802 	strd	sl, r8, [r5, #8]
- 8003dd0:	f8c5 801c 	str.w	r8, [r5, #28]
- 8003dd4:	f8df a0fc 	ldr.w	sl, [pc, #252]	; 8003ed4 <main+0x5b4>
- 8003dd8:	e88e 000f 	stmia.w	lr, {r0, r1, r2, r3}
+ 8003d9e:	a149      	add	r1, pc, #292	; (adr r1, 8003ec4 <main+0x5a4>)
+ 8003da0:	e9d1 0100 	ldrd	r0, r1, [r1]
+ 8003da4:	2208      	movs	r2, #8
+ 8003da6:	822a      	strh	r2, [r5, #16]
+ 8003da8:	4b3f      	ldr	r3, [pc, #252]	; (8003ea8 <main+0x588>)
+ 8003daa:	f8c5 8014 	str.w	r8, [r5, #20]
+ 8003dae:	2204      	movs	r2, #4
+ 8003db0:	832a      	strh	r2, [r5, #24]
+ 8003db2:	2210      	movs	r2, #16
+ 8003db4:	e9c5 0100 	strd	r0, r1, [r5]
+ 8003db8:	842a      	strh	r2, [r5, #32]
+ 8003dba:	cb0f      	ldmia	r3, {r0, r1, r2, r3}
+ 8003dbc:	f10d 0c78 	add.w	ip, sp, #120	; 0x78
+ 8003dc0:	f10d 0e2c 	add.w	lr, sp, #44	; 0x2c
+ 8003dc4:	e88c 000f 	stmia.w	ip, {r0, r1, r2, r3}
+ 8003dc8:	e9c5 a802 	strd	sl, r8, [r5, #8]
+ 8003dcc:	f8c5 801c 	str.w	r8, [r5, #28]
+ 8003dd0:	f8df a100 	ldr.w	sl, [pc, #256]	; 8003ed4 <main+0x5b4>
+ 8003dd4:	e88e 000f 	stmia.w	lr, {r0, r1, r2, r3}
+ 8003dd8:	f44f 77a0 	mov.w	r7, #320	; 0x140
  8003ddc:	f04f 0802 	mov.w	r8, #2
- 8003de0:	f44f 779b 	mov.w	r7, #310	; 0x136
- 8003de4:	e9cd 4803 	strd	r4, r8, [sp, #12]
- 8003de8:	e9cd 7401 	strd	r7, r4, [sp, #4]
- 8003dec:	e9cd ab07 	strd	sl, fp, [sp, #28]
- 8003df0:	26f0      	movs	r6, #240	; 0xf0
- 8003df2:	9509      	str	r5, [sp, #36]	; 0x24
- 8003df4:	4a2d      	ldr	r2, [pc, #180]	; (8003eac <main+0x58c>)
- 8003df6:	4d2e      	ldr	r5, [pc, #184]	; (8003eb0 <main+0x590>)
- 8003df8:	9205      	str	r2, [sp, #20]
- 8003dfa:	9600      	str	r6, [sp, #0]
- 8003dfc:	f8cd 9018 	str.w	r9, [sp, #24]
- 8003e00:	f8cd 8028 	str.w	r8, [sp, #40]	; 0x28
- 8003e04:	4632      	mov	r2, r6
- 8003e06:	a950      	add	r1, sp, #320	; 0x140
- 8003e08:	463b      	mov	r3, r7
- 8003e0a:	6828      	ldr	r0, [r5, #0]
- 8003e0c:	f000 face 	bl	80043ac <LCD_DisplayAdd>
- 8003e10:	4606      	mov	r6, r0
- 8003e12:	6028      	str	r0, [r5, #0]
- 8003e14:	f000 fbca 	bl	80045ac <LCD_Init>
- 8003e18:	f06f 417f 	mvn.w	r1, #4278190080	; 0xff000000
- 8003e1c:	4630      	mov	r0, r6
- 8003e1e:	f000 fd25 	bl	800486c <LCD_Fill>
- 8003e22:	9c11      	ldr	r4, [sp, #68]	; 0x44
- 8003e24:	2101      	movs	r1, #1
- 8003e26:	4620      	mov	r0, r4
- 8003e28:	f009 feba 	bl	800dba0 <calloc>
- 8003e2c:	b350      	cbz	r0, 8003e84 <main+0x564>
- 8003e2e:	f009 fef1 	bl	800dc14 <free>
- 8003e32:	2104      	movs	r1, #4
- 8003e34:	f44f 6058 	mov.w	r0, #3456	; 0xd80
- 8003e38:	f009 feb2 	bl	800dba0 <calloc>
- 8003e3c:	4a1d      	ldr	r2, [pc, #116]	; (8003eb4 <main+0x594>)
- 8003e3e:	4d1e      	ldr	r5, [pc, #120]	; (8003eb8 <main+0x598>)
- 8003e40:	491e      	ldr	r1, [pc, #120]	; (8003ebc <main+0x59c>)
- 8003e42:	f44f 6310 	mov.w	r3, #2304	; 0x900
- 8003e46:	9302      	str	r3, [sp, #8]
- 8003e48:	2301      	movs	r3, #1
- 8003e4a:	e9cd 3000 	strd	r3, r0, [sp]
- 8003e4e:	6010      	str	r0, [r2, #0]
- 8003e50:	f64a 4344 	movw	r3, #44100	; 0xac44
- 8003e54:	2205      	movs	r2, #5
- 8003e56:	481a      	ldr	r0, [pc, #104]	; (8003ec0 <main+0x5a0>)
- 8003e58:	f008 fce0 	bl	800c81c <Start_DAC_DMA>
- 8003e5c:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
- 8003e5e:	ac22      	add	r4, sp, #136	; 0x88
- 8003e60:	c40f      	stmia	r4!, {r0, r1, r2, r3}
- 8003e62:	e895 0003 	ldmia.w	r5, {r0, r1}
- 8003e66:	aa22      	add	r2, sp, #136	; 0x88
- 8003e68:	e884 0003 	stmia.w	r4, {r0, r1}
- 8003e6c:	2114      	movs	r1, #20
- 8003e6e:	a832      	add	r0, sp, #200	; 0xc8
- 8003e70:	f009 fcf2 	bl	800d858 <XPT2046_InitTouch>
- 8003e74:	4631      	mov	r1, r6
- 8003e76:	a832      	add	r0, sp, #200	; 0xc8
- 8003e78:	f008 fe14 	bl	800caa4 <XPT2046_CalibrateTouch>
- 8003e7c:	a932      	add	r1, sp, #200	; 0xc8
- 8003e7e:	4630      	mov	r0, r6
- 8003e80:	f7fd fdbc 	bl	80019fc <TicTacToe_DemoGame>
- 8003e84:	3c01      	subs	r4, #1
- 8003e86:	d0d4      	beq.n	8003e32 <main+0x512>
- 8003e88:	e7cc      	b.n	8003e24 <main+0x504>
- 8003e8a:	bf00      	nop
+ 8003de0:	e9cd 4803 	strd	r4, r8, [sp, #12]
+ 8003de4:	e9cd 7401 	strd	r7, r4, [sp, #4]
+ 8003de8:	e9cd ab07 	strd	sl, fp, [sp, #28]
+ 8003dec:	26f0      	movs	r6, #240	; 0xf0
+ 8003dee:	9509      	str	r5, [sp, #36]	; 0x24
+ 8003df0:	4a2e      	ldr	r2, [pc, #184]	; (8003eac <main+0x58c>)
+ 8003df2:	4d2f      	ldr	r5, [pc, #188]	; (8003eb0 <main+0x590>)
+ 8003df4:	9205      	str	r2, [sp, #20]
+ 8003df6:	9600      	str	r6, [sp, #0]
+ 8003df8:	f8cd 9018 	str.w	r9, [sp, #24]
+ 8003dfc:	f8cd 8028 	str.w	r8, [sp, #40]	; 0x28
+ 8003e00:	4632      	mov	r2, r6
+ 8003e02:	eb0d 0107 	add.w	r1, sp, r7
+ 8003e06:	463b      	mov	r3, r7
+ 8003e08:	6828      	ldr	r0, [r5, #0]
+ 8003e0a:	f000 facf 	bl	80043ac <LCD_DisplayAdd>
+ 8003e0e:	4606      	mov	r6, r0
+ 8003e10:	6028      	str	r0, [r5, #0]
+ 8003e12:	f000 fbcb 	bl	80045ac <LCD_Init>
+ 8003e16:	f06f 417f 	mvn.w	r1, #4278190080	; 0xff000000
+ 8003e1a:	4630      	mov	r0, r6
+ 8003e1c:	f000 fd26 	bl	800486c <LCD_Fill>
+ 8003e20:	9c11      	ldr	r4, [sp, #68]	; 0x44
+ 8003e22:	2101      	movs	r1, #1
+ 8003e24:	4620      	mov	r0, r4
+ 8003e26:	f009 febb 	bl	800dba0 <calloc>
+ 8003e2a:	b360      	cbz	r0, 8003e86 <main+0x566>
+ 8003e2c:	f009 fef2 	bl	800dc14 <free>
+ 8003e30:	f008 fc16 	bl	800c660 <I2S3_Init>
+ 8003e34:	2104      	movs	r1, #4
+ 8003e36:	f44f 6058 	mov.w	r0, #3456	; 0xd80
+ 8003e3a:	f009 feb1 	bl	800dba0 <calloc>
+ 8003e3e:	4a1d      	ldr	r2, [pc, #116]	; (8003eb4 <main+0x594>)
+ 8003e40:	4d1d      	ldr	r5, [pc, #116]	; (8003eb8 <main+0x598>)
+ 8003e42:	491e      	ldr	r1, [pc, #120]	; (8003ebc <main+0x59c>)
+ 8003e44:	f44f 6310 	mov.w	r3, #2304	; 0x900
+ 8003e48:	9302      	str	r3, [sp, #8]
+ 8003e4a:	2301      	movs	r3, #1
+ 8003e4c:	e9cd 3000 	strd	r3, r0, [sp]
+ 8003e50:	6010      	str	r0, [r2, #0]
+ 8003e52:	f64a 4344 	movw	r3, #44100	; 0xac44
+ 8003e56:	2205      	movs	r2, #5
+ 8003e58:	4819      	ldr	r0, [pc, #100]	; (8003ec0 <main+0x5a0>)
+ 8003e5a:	f008 fcdf 	bl	800c81c <Start_DAC_DMA>
+ 8003e5e:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
+ 8003e60:	ac22      	add	r4, sp, #136	; 0x88
+ 8003e62:	c40f      	stmia	r4!, {r0, r1, r2, r3}
+ 8003e64:	e895 0003 	ldmia.w	r5, {r0, r1}
+ 8003e68:	aa22      	add	r2, sp, #136	; 0x88
+ 8003e6a:	e884 0003 	stmia.w	r4, {r0, r1}
+ 8003e6e:	2114      	movs	r1, #20
+ 8003e70:	a832      	add	r0, sp, #200	; 0xc8
+ 8003e72:	f009 fcf1 	bl	800d858 <XPT2046_InitTouch>
+ 8003e76:	4631      	mov	r1, r6
+ 8003e78:	a832      	add	r0, sp, #200	; 0xc8
+ 8003e7a:	f008 fe13 	bl	800caa4 <XPT2046_CalibrateTouch>
+ 8003e7e:	a932      	add	r1, sp, #200	; 0xc8
+ 8003e80:	4630      	mov	r0, r6
+ 8003e82:	f7fd fdbb 	bl	80019fc <TicTacToe_DemoGame>
+ 8003e86:	3c01      	subs	r4, #1
+ 8003e88:	d0d2      	beq.n	8003e30 <main+0x510>
+ 8003e8a:	e7ca      	b.n	8003e22 <main+0x502>
  8003e8c:	f3af 8000 	nop.w
 	...
  8003e98:	00000060 	.word	0x00000060
