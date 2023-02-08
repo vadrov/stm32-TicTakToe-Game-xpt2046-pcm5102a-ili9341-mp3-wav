@@ -36,4 +36,5 @@
 "./Music/wav_callback.o"
 "./PCM5102/pcm5102.o"
 "./XPT2046/calibrate_touch.o"
+"./XPT2046/demo.o"
 "./XPT2046/xpt2046.o"

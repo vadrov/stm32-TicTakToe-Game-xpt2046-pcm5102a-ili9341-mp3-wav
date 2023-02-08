@@ -1,6 +1,8 @@
-../XPT2046/xpt2046.c:118:12:Read_IRQ_Pin	0	static
-../XPT2046/xpt2046.c:26:6:XPT2046_EXTICallback	0	static,ignoring_inline_asm
-../XPT2046/xpt2046.c:89:6:XPT2046_ConvertPoint	32	static
-../XPT2046/xpt2046.c:96:6:XPT2046_InitTouch	16	static
-../XPT2046/xpt2046.c:201:9:XPT2046_GetTouch	56	static,ignoring_inline_asm
-../XPT2046/xpt2046.c:46:6:XPT2046_TIMCallback	120	static,ignoring_inline_asm
+../XPT2046/xpt2046.c:199:12:get_adc_in.constprop	64	static,ignoring_inline_asm
+../XPT2046/xpt2046.c:41:6:XPT2046_InitTouch	32	static,ignoring_inline_asm
+../XPT2046/xpt2046.c:68:9:XPT2046_GetTouch	16	static
+../XPT2046/xpt2046.c:91:6:XPT2046_EXTICallback	4	static,ignoring_inline_asm
+../XPT2046/xpt2046.c:109:6:XPT2046_TIMCallback	16	static,ignoring_inline_asm
+../XPT2046/xpt2046.c:147:5:XPT2046_GetTemp	16	static
+../XPT2046/xpt2046.c:164:5:XPT2046_GetVbat	8	static
+../XPT2046/xpt2046.c:179:5:XPT2046_GetAux	8	static

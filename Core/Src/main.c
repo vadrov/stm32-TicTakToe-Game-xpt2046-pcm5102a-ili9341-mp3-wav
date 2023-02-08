@@ -6,12 +6,12 @@
  * дисплеем на базе контроллера ILI9341 (spi) 320х240, аудио ЦАПом PCM5102
  *
  * --------------------------------------- ДЕМО-ИГРА ------------------------------------------
- *	         		       для stm32f4 (stm32f401ccu6) с touch XPT2046
+ *	         		               для stm32f4 (stm32f401ccu6)
  * 		        				        Крестики-нолики
  *
  * С ИИ на основе алгоритма Минимакс (Minimax)
  *
- * Со звуком и эффектами (программные декодеры mp3 и wav)
+ * С музыкой и звуковыми эффектами (программные декодеры mp3 и wav)
  *
  * Использованы фрагменты музыкальных произведений (на основе лицензии CC BY 3.0)
  * композитора Кевина Маклауда:
@@ -258,6 +258,13 @@ static void ShowGameField(LCD_Handler *lcd, uint8_t *field, uint8_t field_size)
 	}
 }
 
+/* Cтруктура, описывающая ход и его результативность */
+typedef struct {
+	uint8_t i, j;			//Индексы клетки на игровом поле куда сделан шаг
+	int score;				//Очки шага (результативность хода)
+	uint8_t sub_score;		//Дополнительные очки шага (учитываются в случае равенства очков за основные шаги)
+} GAME_STEP;
+
 /*
  * Игровая логика. Выбор хода ИИ
  * Возвращает очки выбранного хода. В переменных row и col - позицию (строка, столбец) выбранного хода.
@@ -267,26 +274,19 @@ static void ShowGameField(LCD_Handler *lcd, uint8_t *field, uint8_t field_size)
  */
 static int GameLogic(uint8_t *field, uint8_t field_size, uint8_t gamer, uint8_t maxmin, uint8_t *row, uint8_t *col, uint8_t depth)
 {
-	typedef struct { 			//Объявляем структуру, описывающую ход
-		uint8_t i, j;			//Позиция шага на игровом поле
-		int score;				//Очки шага (результативность хода)
-		uint8_t sub_score;		//Дополнительные очки шага (учитываются в случае равенства очков за основные шаги)
-	} GAME_STEP;
-	int score, sub_score, m, k;
-	uint8_t row1, col1, i, j, f;
 	if (!depth) return 0; //Если достигнут предел глубины рекурсии, то выходим, возвратив 0 очков за ход
-	int max_step = 0;
-	for (m = 0; m < field_size * field_size; m++) {
-		if (!field[m]) max_step++;
+	int score, sub_score;
+	uint8_t row1, col1, i, j, res, k = 0;
+	for (int m = 0; m < field_size * field_size; m++) {
+		if (!field[m]) k++;
 	}
-	if (!max_step) { //Игровых ситуаций нет, т.к. нет свободных ячеек: некуда ходить -> ничья
+	if (!k) { 					  //Нет свободных ячеек: некуда ходить -> ничья
 		*row = *col = field_size; //Возвращаем заведомо некорректные индексы клетки для хода
 		return 0;
 	}
-	GAME_STEP logic_mas[max_step]; //Массив игровых ходов для текущего игрового поля
+	GAME_STEP logic_mas[k]; //Массив игровых ходов для текущего игрового поля
 	//Для каждой свободной клетки игрового поля создадим игровую ситуацию GAME_STEP, которая будет содержать
 	//параметры хода (индексы клетки) игрока gamer, основные и дополнительные очки за ход (результативность хода).
-	//Считать игровые ситуации будем в переменной k
 	for (i = 0, k = 0; i < field_size; i++)	{ //цикл по количеству строк в игровом поле
 		for (j = 0; j < field_size; j++) {	  //Цикл по количеству столбцов в игровом поле
 			if (!field[i * field_size + j]) { //Если клетка в позиции [i, j] игрового поля свободна:
@@ -296,20 +296,19 @@ static int GameLogic(uint8_t *field, uint8_t field_size, uint8_t gamer, uint8_t 
 				logic_mas[k].score = logic_mas[k].sub_score = 0; //Инициализируем очки хода
 				row1 = col1 = 0;
 				//Сканируем игровое поле k-той игровой ситуации, оценивая результативность предполагаемого хода
-				f = ScanField(field, field_size, gamer, &row1, &col1, &logic_mas[k].sub_score);
-				if (f) {			//Шаг привел к победе или ничьей?
-					if (f == 1) {   //Победа
+				res = ScanField(field, field_size, gamer, &row1, &col1, &logic_mas[k].sub_score);
+				if (res) {				//Шаг привел к победе или ничьей?
+					if (res == 1) {   	//Победа
 						logic_mas[k].score = (maxmin == MAXIMIZE) ? 1 : -1; //очки за победу
 					}
-					else {			//Ничья
+					else {				//Ничья
 						logic_mas[k].score = (maxmin == MAXIMIZE) ? 0 : 0;	//очки за ничью
 					}
 				}
 				else { //Если ход не привел ни к победе, ни к ничьей, то анализируем все возможные ответные ходы противника
 					   //на ход игрока gamer. Осуществим, т.н., рекурсивный вызов функции по отношению к противнику.
 					   //Проанализируем все возможные ответные ходы противника на наш ход, но критерий алгоритма Минимакс
-					   //изменяем на противоположный, а саму функцию вызываем для противника gamer. В качестве поля для анализа
-					   //передаем копию поля с предполагаемым шагом игрока gamer
+					   //изменяем на противоположный, а саму функцию вызываем для противника gamer.
 					logic_mas[k].score = GameLogic(field, field_size, (gamer == HUMAN)? COMPUTER: HUMAN, (maxmin == MAXIMIZE)? MINIMIZE : MAXIMIZE, row, col, depth - 1);
 				}
 				field[i * field_size + j] = 0; //Восстанавливаем игровое поле в состояние "до хода"
@@ -339,7 +338,7 @@ static int GameLogic(uint8_t *field, uint8_t field_size, uint8_t gamer, uint8_t 
 				}
 			}
 		}
-		i++;	//переходим к следующему игровому шагу
+		i++;	//Переходим к следующему игровому шагу
 	}	//Индексы клетки для лучшего хода с учетом результативности:
 	*row = logic_mas[j].i;	//строка
 	*col = logic_mas[j].j;	//столбец
@@ -485,7 +484,7 @@ static int SelectMenu(LCD_Handler *lcd, XPT2046_Handler *t, uint8_t *field, uint
 		if (t->last_click_time > 3) { //Исключаем случайные/короткие касания тача, ограничивая длительность клика
 			int i;
 			tPoint pos;
-			XPT2046_ConvertPoint(&pos, &t->first_click_point, &t->coef); //Конвертируем координаты тачскрина в дисплейные
+			XPT2046_ConvertPoint(&pos, &t->point, &t->coef); //Конвертируем координаты тачскрина в дисплейные
 			i = pos.y / (size / 8); //Рассчитываем номер строки по координате y дисплея
 			if (i >= row_0 && i <= row_1) {
 				(void)PlayerAdd(&WAV_drum, 0); //Звук хода
@@ -746,7 +745,7 @@ Game_option:
 					__NOP();
 				}
 				if (t->last_click_time > 3) { //Исключаем случайные/короткие касания тача, ограничивая длительность клика
-					XPT2046_ConvertPoint(&pos, &t->first_click_point, &t->coef); //Конвертируем координаты тачскрина в дисплейные
+					XPT2046_ConvertPoint(&pos, &t->point, &t->coef); //Конвертируем координаты тачскрина в дисплейные
 					if (pos.x >= 0 && pos.x <= 47 &&								  //Если был клик по "иконке" "MENU",
 						pos.y >= size + 2 && pos.y <= size + 2 + 19) {				  //то переходим в меню опций игры
 						goto Game_option;
@@ -925,6 +924,8 @@ int main(void)
 						 310,
 						 ILI9341_CONTROLLER_WIDTH,
 						 310,//ILI9341_CONTROLLER_HEIGHT,
+						 0,
+						 0,
 						 PAGE_ORIENTATION_PORTRAIT_MIRROR,
 						 ILI9341_Init,
 						 ILI9341_SetWindow,
@@ -950,7 +951,7 @@ int main(void)
 
   /* ----------------------------------- Настройка тачскрина ------------------------------------------*/
   XPT2046_ConnectionData cnt_touch = { .spi 	 = SPI1,				//Используемый spi
-		  	  	  	  	  	  	  	   .speed 	 = 5,					//Скорость spi 0...7 (0 - clk/2, 1 - clk/4, ..., 7 - clk/256)
+		  	  	  	  	  	  	  	   .speed 	 = 4,					//Скорость spi 0...7 (0 - clk/2, 1 - clk/4, ..., 7 - clk/256)
 									   .cs_port  = T_CS_GPIO_Port,		//Порт для управления T_CS
 									   .cs_pin 	 = T_CS_Pin,			//Вывод порта для управления T_CS
 									   .irq_port = T_IRQ_GPIO_Port,		//Порт для управления T_IRQ

@@ -6,14 +6,17 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../XPT2046/calibrate_touch.c \
+../XPT2046/demo.c \
 ../XPT2046/xpt2046.c 
 
 OBJS += \
 ./XPT2046/calibrate_touch.o \
+./XPT2046/demo.o \
 ./XPT2046/xpt2046.o 
 
 C_DEPS += \
 ./XPT2046/calibrate_touch.d \
+./XPT2046/demo.d \
 ./XPT2046/xpt2046.d 
 
 
@@ -24,7 +27,7 @@ XPT2046/%.o XPT2046/%.su: ../XPT2046/%.c XPT2046/subdir.mk
 clean: clean-XPT2046
 
 clean-XPT2046:
-	-$(RM) ./XPT2046/calibrate_touch.d ./XPT2046/calibrate_touch.o ./XPT2046/calibrate_touch.su ./XPT2046/xpt2046.d ./XPT2046/xpt2046.o ./XPT2046/xpt2046.su
+	-$(RM) ./XPT2046/calibrate_touch.d ./XPT2046/calibrate_touch.o ./XPT2046/calibrate_touch.su ./XPT2046/demo.d ./XPT2046/demo.o ./XPT2046/demo.su ./XPT2046/xpt2046.d ./XPT2046/xpt2046.o ./XPT2046/xpt2046.su
 
 .PHONY: clean-XPT2046
 

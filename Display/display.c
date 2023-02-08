@@ -173,8 +173,7 @@ void LCD_String_Interpretator(LCD_Handler* lcd, uint8_t *str)
 				   SPI_CR1_CRCEN | 		//выключаем аппаратный расчет CRC
 				   SPI_CR1_DFF); 		//установим 8-битную передачу
 	spi->CR1 |= SPI_CR1_SPE; // SPI включаем
-	while (1)
-	{
+	while (1) {
 		switch (*str++) {
 			//управляющий код "команда"
 			case LCD_UPR_COMMAND:
@@ -224,6 +223,8 @@ LCD_Handler* LCD_DisplayAdd(LCD_Handler *lcds,     /* указатель на с
 							uint16_t resolution2,
 							uint16_t width_controller,
 							uint16_t height_controller,
+							int16_t w_offs,
+							int16_t h_offs,
 							LCD_PageOrientation orientation,
 							DisplayInitCallback init,
 							DisplaySetWindowCallback set_win,
@@ -274,12 +275,12 @@ LCD_Handler* LCD_DisplayAdd(LCD_Handler *lcds,     /* указатель на с
 		lcd->Width_Controller = width_controller;
 		lcd->Height_Controller = height_controller;
 		if (orientation==PAGE_ORIENTATION_PORTRAIT) {
-			lcd->x_offs = 0;
-			lcd->y_offs = 0;
+			lcd->x_offs = w_offs;
+			lcd->y_offs = h_offs;
 		}
 		else {
-			lcd->x_offs = lcd->Width_Controller - lcd->Width;
-			lcd->y_offs = lcd->Height_Controller - lcd->Height;
+			lcd->x_offs = lcd->Width_Controller - lcd->Width - w_offs;
+			lcd->y_offs = lcd->Height_Controller - lcd->Height - h_offs;
 		}
 	}
 	else if (orientation==PAGE_ORIENTATION_LANDSCAPE || orientation==PAGE_ORIENTATION_LANDSCAPE_MIRROR)	{
@@ -288,12 +289,12 @@ LCD_Handler* LCD_DisplayAdd(LCD_Handler *lcds,     /* указатель на с
 		lcd->Width_Controller = height_controller;
 		lcd->Height_Controller = width_controller;
 		if (orientation==PAGE_ORIENTATION_LANDSCAPE) {
-			lcd->x_offs = 0;
-			lcd->y_offs = lcd->Height_Controller - lcd->Height;
+			lcd->x_offs = h_offs;
+			lcd->y_offs = lcd->Height_Controller - lcd->Height - w_offs;
 		}
 		else {
-			lcd->x_offs = lcd->Width_Controller - lcd->Width;
-			lcd->y_offs = 0;
+			lcd->x_offs = lcd->Width_Controller - lcd->Width - h_offs;
+			lcd->y_offs = w_offs;
 		}
 	}
 	else {
@@ -395,7 +396,7 @@ void LCD_SetBackLight(LCD_Handler* lcd, uint8_t bk_percent)
 	//подсветка с использованием PWM
 	if (lcd->bkl_data.htim_bk) {
 		//вычисляем % яркости, как часть от периода счетчика
-		uint32_t bk_value = lcd->bkl_data.htim_bk->ARR*bk_percent/100;
+		uint32_t bk_value = lcd->bkl_data.htim_bk->ARR * bk_percent / 100;
 		//задаем скважность PWM конкретного канала
 		switch(lcd->bkl_data.channel_htim_bk) {
 			case LL_TIM_CHANNEL_CH1:
@@ -477,7 +478,7 @@ void LCD_SleepOut(LCD_Handler* lcd)
 //установка на дисплее окна вывода
 void LCD_SetActiveWindow(LCD_Handler* lcd, uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 {
-	LCD_String_Interpretator(lcd, lcd->SetActiveWindow_callback(x1+lcd->x_offs, y1+lcd->y_offs, x2+lcd->x_offs, y2+lcd->y_offs));
+	LCD_String_Interpretator(lcd, lcd->SetActiveWindow_callback(x1 + lcd->x_offs, y1 + lcd->y_offs, x2 + lcd->x_offs, y2 + lcd->y_offs));
 }
 
 //вывод блока данных на дисплей
@@ -494,7 +495,7 @@ void LCD_WriteData(LCD_Handler *lcd, uint16_t *data, uint32_t len)
 	if (lcd->data_bus == LCD_DATA_16BIT_BUS) {
 		spi->CR1 |= SPI_CR1_DFF; //16-битная передача
 	}
-	spi->CR1 |= SPI_CR1_SPE; // SPI включаем
+	spi->CR1 |= SPI_CR1_SPE; //SPI включаем
 	if (lcd->data_bus == LCD_DATA_16BIT_BUS) {
 		while (len) {
 			spi->DR = *data++; //записываем данные в регистр
@@ -504,7 +505,7 @@ void LCD_WriteData(LCD_Handler *lcd, uint16_t *data, uint32_t len)
 	}
 	else {
 		len *= 2;
-		uint8_t *data1 = (uint8_t *)data;
+		uint8_t *data1 = (uint8_t*)data;
 		while (len)	{
 			spi->DR = *data1++; //записываем данные в регистр
 			while (!(spi->SR & SPI_SR_TXE)) { __NOP(); } //ждем окончания передачи
@@ -536,7 +537,7 @@ void LCD_WriteDataDMA(LCD_Handler *lcd, uint16_t *data, uint32_t len)
 		if (lcd->data_bus == LCD_DATA_16BIT_BUS) {
 			spi->CR1 |= SPI_CR1_DFF; //16-битная передача
 		}
-		spi->CR1 |= SPI_CR1_SPE; // SPI включаем
+		spi->CR1 |= SPI_CR1_SPE; //SPI включаем
 		DMA_TypeDef *dma_x = lcd->spi_data.dma_tx.dma;
 		uint32_t stream = lcd->spi_data.dma_tx.stream;
 		DMA_Stream_TypeDef *dma_TX = ((DMA_Stream_TypeDef *)((uint32_t)((uint32_t)dma_x + STREAM_OFFSET_TAB[stream])));
@@ -785,7 +786,7 @@ static INTERSECTION_TYPES LinesIntersection(int16_t x1, int16_t y1, int16_t x2, 
 	}
 	//Определяем точку пересечения прямых (уравнение прямой получаем из координат точек, задающих отрезок)
 	*x_min = *x_max = (x2 - x1) * (y0 - y1) / (y2 - y1) + x1;
-	if (min(x1, x2) <= *x_min && *x_min <= max(x1, x2)) { //Если координата x точки пересечения принадлежит отрезку
+	if (min(x1, x2) <= *x_min && *x_min <= max(x1, x2)) { //Если координата x точки пересечения принадлежит отрезку,
 		return LINES_INTERSECT;							  //то есть пересечение
 	}
 	return LINES_NO_INTERSECT;
@@ -914,15 +915,15 @@ void LCD_DrawFilledCircle(LCD_Handler* lcd, int16_t x0, int16_t y0, int16_t r, u
  * data - указатель на блок памяти (изображение) для вывода на дисплей;
  * dma_use_flag - флаг, определяющий задействование DMA (0 - без DMA, !=0 - с DMA)
  */
-void LCD_DrawImage(LCD_Handler* lcd, uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data, uint8_t dma_use_flag)
+void LCD_DrawImage(LCD_Handler* lcd, uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t *data, uint8_t dma_use_flag)
 {
 	if ((x >= lcd->Width) || (y >= lcd->Height) || (x + w - 1) >= lcd->Width || (y + h - 1) >= lcd->Height) return;
 	LCD_SetActiveWindow(lcd, x, y, x + w - 1, y + h - 1);
 	if (dma_use_flag) {
-		LCD_WriteDataDMA(lcd, (uint16_t *)data, w * h);
+		LCD_WriteDataDMA(lcd, data, w * h);
 	}
 	else {
-		LCD_WriteData(lcd, (uint16_t *)data, w * h);
+		LCD_WriteData(lcd, data, w * h);
 	}
 }
 
@@ -995,7 +996,7 @@ void LCD_WriteChar(LCD_Handler* lcd, uint16_t x, uint16_t y, char ch, FontDef *f
 			if (bytes_per_line == 1) { tmp = *((uint8_t*)b); }
 			else if (bytes_per_line == 2) { tmp = *((uint16_t*)b); }
 			else if (bytes_per_line == 3) { tmp = (*((uint8_t*)b)) | ((*((uint8_t*)(b + 1))) << 8) |  ((*((uint8_t*)(b + 2))) << 16); }
-			else { tmp = *((uint32_t*)b); }
+			else if (bytes_per_line == 4) { tmp = *((uint32_t*)b); }
 			b += bytes_per_line;
 			for (j = 0; j < font->width; j++) {
 				if ((tmp << j) & k) {

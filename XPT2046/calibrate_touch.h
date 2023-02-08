@@ -25,4 +25,7 @@
 /* Калибровка тачскрина по 5 точкам */
 void XPT2046_CalibrateTouch(XPT2046_Handler *t, LCD_Handler *lcd);
 
+/* Преобразование координат тачскрина в дисплейные координаты */
+void XPT2046_ConvertPoint(tPoint *p_display, tPoint *p_touch, tCoef *coef);
+
 #endif /* CALIBRATE_TOUCH_H_ */
