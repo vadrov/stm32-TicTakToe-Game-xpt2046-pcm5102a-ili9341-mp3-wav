@@ -1,4 +1,4 @@
-Copyright (C) 2022, VadRov, all right reserved.
+Copyright (c) 2022 VadRov / www.youtube.com/@VadRov / www.dzen.ru/vadrov
 
 # ДЕМО-ИГРА для stm32f4 (stm32f401ccu6) Крестики-Нолики
 
