@@ -21,4 +21,4 @@ Delay Rock, (с)2005 Kevin MacLeod
 
 Контакты: [Youtube](https://www.youtube.com/@VadRov) [Дзен](https://dzen.ru/vadrov) [VK](https://vk.com/vadrov) [Telegram](https://t.me/vadrov_channel)
 
-Поддержать автора: [donate.qiwi](https://donate.qiwi.com/payin/VadRov)  [donate.yoomoney](https://yoomoney.ru/to/4100117522443917)
+Поддержать автора: [donate.yoomoney](https://yoomoney.ru/to/4100117522443917)
