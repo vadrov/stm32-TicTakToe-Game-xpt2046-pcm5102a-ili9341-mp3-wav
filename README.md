@@ -6,6 +6,7 @@ Copyright (c) 2022 VadRov / www.youtube.com/@VadRov / www.dzen.ru/vadrov
   
 С ИИ на основе алгоритма Минимакс (Minimax), cо звуком и эффектами (программные декодеры mp3 и wav), c комментированием кода
 
+![изображение_2024-04-15_121623630](https://github.com/vadrov/stm32-TicTakToe-Game-xpt2046-pcm5102a-ili9341-mp3-wav/assets/111627147/f5e05a38-885b-4f03-86ec-eeb1af867adc)
 ![изображение_2024-04-15_121040761](https://github.com/vadrov/stm32-TicTakToe-Game-xpt2046-pcm5102a-ili9341-mp3-wav/assets/111627147/132be8c5-8505-4514-ac57-b243ea19aaf4)
 
 Схема подключения дисплея с тачскрином:
