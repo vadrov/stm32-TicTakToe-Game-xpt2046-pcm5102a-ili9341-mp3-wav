@@ -54,7 +54,7 @@ static int wav_process_decode (Player *player)
 	uint32_t samples = audioCFG->samples;
 	samples = WAV_Decoder(audioCFG, &inbuffer->cur_ptr, (int*)&inbuffer->data_left, (uint16_t*)player->outbuf, samples);
 	if (samples) {  //Если входных данных не хватило на фрейм/кадр, то обнуляем оставшиеся данные выходного PCM буфера
-		memset(&player->outbuf[audioCFG->samples - samples], 0, 4 * samples);
+		memset(&player->outbuf[audioCFG->samples - samples], 0, 2 * samples);
 		return 1; //Завершаем декодирование с ошибкой
 	}
 	return 0; //Завершаем декодирование без ошибки
@@ -117,10 +117,12 @@ uint32_t WAV_Decoder(AudioConfig *audioCFG, uint8_t **inbuf, int *bytesLeft, uin
 			outbuf++;
 			ch--;
 		}
+		/*
 		if (channels == 1)	{					//Для моно делаем копию 1 канала
 			*outbuf = *(outbuf - 1);			//во втором канале
 			outbuf++;
 		}
+		*/
 		samples--;					//Уменьнаем количество выходных сэмплов
 		samples_in_buffer--;		//Уменьшаем количество сэмплов, на которые хватит данных во входном буфере
 	}
